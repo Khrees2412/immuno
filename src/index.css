@@ -1,0 +1,11 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    margin: 0;
+    font-family: "Andika", sans-serif;
+    font-family: "Inter", sans-serif;
+    font-family: "Sora", sans-serif;
+}
