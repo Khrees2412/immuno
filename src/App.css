@@ -66,3 +66,16 @@ input:focus {
 .input:focus {
     border: 2px solid #214252;
 }
+.submit {
+    width: 100%;
+    padding: 20px;
+    /* border: 1px solid black; */
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 20px;
+    background-color: green;
+    cursor: pointer;
+}
+.radios {
+    display: flex;
+}

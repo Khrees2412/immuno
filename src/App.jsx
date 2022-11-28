@@ -9,7 +9,9 @@ function App() {
         <div className="App">
             <nav className="navbar">
                 {/* <AuthStatus /> */}
-                <h1>Immuno</h1>
+                <Link to="/">
+                    <h1>Immuno</h1>
+                </Link>
                 <ul className="navlinks">
                     <li className="navlink">
                         <Link to="/signup">Signup</Link>
@@ -17,8 +19,10 @@ function App() {
                     <li className="navlink">
                         <Link to="/signin">Signin</Link>
                     </li>
-                    <li className="navlink">
-                        <button className="logout" onClick={signOut}></button>
+                    <li className="navlink logout">
+                        <button className="logout" onClick={signOut}>
+                            Log out
+                        </button>
                     </li>
                 </ul>
             </nav>

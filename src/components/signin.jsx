@@ -48,7 +48,9 @@ export default function Signin() {
                         name="password"
                     />
                 </div>
-                <button onClick={handleLogin}></button>
+                <button onClick={handleLogin} className="submit">
+                    Submit
+                </button>
             </form>
         </div>
     );
