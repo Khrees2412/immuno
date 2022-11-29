@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Signup() {
     const [user, setUser] = useState({
@@ -8,13 +9,15 @@ export default function Signup() {
         password: "",
         fullname: "",
         gender: "",
-        dob: "",
+        dob: new Date(),
         guardian: "",
     });
+    const [error, setError] = useState(false);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUser({ ...user, [name]: value });
     };
+
     const { fullname, email, password, gender, dob, guardian } = user;
 
     const handleLogin = async (e) => {
@@ -23,6 +26,9 @@ export default function Signup() {
         try {
             setLoading(true);
             const { error } = await supabase.auth.signInWithOtp({ email });
+            if (dob === new Date()) {
+                alert("invalid DOB!!");
+            }
             if (error) throw error;
             alert("Check your email for the login link!");
         } catch (error) {
@@ -31,10 +37,30 @@ export default function Signup() {
             setLoading(false);
         }
     };
-
+    const handleSignup = async () => {
+        try {
+            const { user, session, error } = await supabase.auth.signUp();
+        } catch (error) {}
+        console.error(error);
+    };
+    const saveUser = async () => {
+        try {
+            const { data, error } = await supabase.from("user").insert([
+                {
+                    name: fullname,
+                    gender,
+                    dob,
+                    guardian_contact: guardian,
+                },
+            ]);
+        } catch (error) {
+            throw error;
+        }
+    };
     return (
         <div>
             <form>
+                <h1 className="form-title">Infant Registration</h1>
                 <div className="text-field">
                     <label>Fullname</label>
                     <input
@@ -48,22 +74,24 @@ export default function Signup() {
                 <div className="text-field">
                     <label>Gender</label>
                     <div className="radios">
-                        <div>
-                            Male
+                        <div className="radio">
+                            <div>Male</div>
                             <input
                                 type="radio"
-                                value={gender}
+                                value="Male"
+                                checked={gender === "Male"}
                                 onChange={handleChange}
-                                name="Male"
+                                name="gender"
                             />
                         </div>
-                        <div>
-                            Female
+                        <div className="radio">
+                            <div>Female</div>
                             <input
                                 type="radio"
-                                value={gender}
+                                value="Female"
+                                checked={gender === "Female"}
                                 onChange={handleChange}
-                                name="Female"
+                                name="gender"
                             />
                         </div>
                     </div>
@@ -79,10 +107,12 @@ export default function Signup() {
                 </div>
                 <div className="text-field">
                     <label>Date of birth</label>
-                    <DatePicker
-                        selected={dob}
-                        onChange={(date) => setUser({ date })}
-                    />
+                    <div>
+                        <DatePicker
+                            selected={dob}
+                            onChange={(date) => setUser({ ...user, dob: date })}
+                        />
+                    </div>
                 </div>
                 <div className="text-field">
                     <label>Email</label>

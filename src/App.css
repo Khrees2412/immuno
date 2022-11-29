@@ -79,3 +79,11 @@ input:focus {
 .radios {
     display: flex;
 }
+.radio {
+    display: flex;
+    justify-content: space-between;
+}
+.form-title {
+    text-align: center;
+    margin-bottom: 20px;
+}

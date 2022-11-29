@@ -25,6 +25,14 @@ export default function Signin() {
         }
     };
     const { email, password } = user;
+    const [session, setSession] = useState(null);
+
+    useEffect(() => {
+        setSession(supabase.auth.session());
+        supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
+        });
+    }, []);
     return (
         <div>
             <form>
