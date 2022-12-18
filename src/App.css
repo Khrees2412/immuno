@@ -69,19 +69,18 @@ input:focus {
 .submit {
     width: 100%;
     padding: 20px;
-    /* border: 1px solid black; */
     border: none;
     border-radius: 0.3rem;
     font-size: 20px;
     background-color: green;
     cursor: pointer;
 }
-.radios {
-    display: flex;
-}
-.radio {
+.flex {
     display: flex;
     justify-content: space-between;
+}
+.radios {
+    padding: 20px;
 }
 .form-title {
     text-align: center;

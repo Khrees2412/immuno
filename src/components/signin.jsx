@@ -1,41 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { supabase } from "../supabaseClient";
+// import { AppContext } from "../AppContext";
 
 export default function Signin() {
     const [user, setUser] = useState({
         email: "",
         password: "",
     });
+    const [loading, setLoading] = useState(false);
+    // const { loading, signInAccount } = useContext(AppContext);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUser({ ...user, [name]: value });
     };
-    const handleLogin = async (e) => {
-        e.preventDefault();
-
+    const { email, password } = user;
+    const signInAccount = async (email, password) => {
+        setLoading(true);
         try {
-            setLoading(true);
-            const { error } = await supabase.auth.signInWithOtp({ email });
-            if (error) throw error;
-            alert("Check your email for the login link!");
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (error) throw error; //check if there was an error fetching the data and move the execution to the catch block
+
+            alert("Sign in successful");
         } catch (error) {
             alert(error.error_description || error.message);
         } finally {
             setLoading(false);
         }
     };
-    const { email, password } = user;
+    const handleSignin = async (e) => {
+        e.preventDefault();
+        await signInAccount(email, password);
+    };
+
     const [session, setSession] = useState(null);
 
     useEffect(() => {
-        setSession(supabase.auth.session());
+        setSession(supabase.auth.getSession());
         supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
         });
     }, []);
     return (
         <div>
-            <form>
+            <form onSubmit={handleSignin}>
                 <div className="text-field">
                     <label htmlFor="email">Email</label>
                     <input
@@ -56,8 +67,8 @@ export default function Signin() {
                         name="password"
                     />
                 </div>
-                <button onClick={handleLogin} className="submit">
-                    Submit
+                <button disabled={loading} className="submit">
+                    {loading ? "Loading..." : "Submit"}
                 </button>
             </form>
         </div>

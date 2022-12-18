@@ -1,10 +1,25 @@
 import { useNavigate, Outlet, Route, Routes, Link } from "react-router-dom";
 import Signin from "./components/signin";
-import Signup from "./components/signup";
+import { supabase } from "./supabaseClient";
+import Register from "./components/register";
 import "./App.css";
 import Home from "./components/home";
+import { useEffect } from "react";
 
 function App() {
+    const navigator = useNavigate();
+
+    useEffect(() => {
+        supabase.auth.onAuthStateChange((_event, session) => {
+            if (session === null) {
+                navigator("/signin");
+            } else {
+                navigator("/");
+            }
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <div className="App">
             <nav className="navbar">
@@ -14,7 +29,7 @@ function App() {
                 </Link>
                 <ul className="navlinks">
                     <li className="navlink">
-                        <Link to="/signup">Signup</Link>
+                        <Link to="/register">Register</Link>
                     </li>
                     <li className="navlink">
                         <Link to="/signin">Signin</Link>
@@ -28,7 +43,7 @@ function App() {
             </nav>
             <Routes>
                 <Route path="/" index element={<Home />} />
-                <Route path="/signup" element={<Signup />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/signin" element={<Signin />} />
             </Routes>
         </div>
