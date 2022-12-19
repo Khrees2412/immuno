@@ -2,6 +2,7 @@ import { useNavigate, Outlet, Route, Routes, Link } from "react-router-dom";
 import Signin from "./components/signin";
 import { supabase } from "./supabaseClient";
 import Register from "./components/register";
+import Dashboard from "./components/dashboard";
 import "./App.css";
 import Home from "./components/home";
 import { useEffect } from "react";
@@ -34,6 +35,9 @@ function App() {
                     <li className="navlink">
                         <Link to="/signin">Signin</Link>
                     </li>
+                    <li className="navlink">
+                        <Link to="/dashboard">Dashboard</Link>
+                    </li>
                     <li className="navlink logout">
                         <button className="logout" onClick={signOut}>
                             Log out
@@ -45,6 +49,7 @@ function App() {
                 <Route path="/" index element={<Home />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/signin" element={<Signin />} />
+                <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
         </div>
     );

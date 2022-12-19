@@ -2,6 +2,7 @@ import { Suspense, useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
     const [user, setUser] = useState({
@@ -20,13 +21,14 @@ export default function Register() {
     };
 
     const { fullname, email, password, gender, dob, guardian } = user;
+    const navigate = useNavigate();
 
-    // useEffect(() => {
-    // if (supabase.auth.user() !== null) {
-    //     history.replace("/signup");
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
+    useEffect(() => {
+        if (supabase.auth.getUser() !== null) {
+            navigate("/dashboard");
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleSignup = async (e) => {
         e.preventDefault();
@@ -38,17 +40,16 @@ export default function Register() {
             if (error) throw error; //check if there was an error fetching the data and move the execution to the catch block
 
             if (data.user) {
-                const { user, error } = await supabase.from("User").insert([
+                const { _, error } = await supabase.from("User").insert([
                     {
                         name: fullname,
                         dob,
                         guardian_contact: guardian,
                         gender,
-                        user_id: data.user.id,
+                        auth_id: data.user.id,
                     },
                 ]);
                 if (error) throw error;
-                console.log(user);
             }
         } catch (error) {
             console.error(error);
