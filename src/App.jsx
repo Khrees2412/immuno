@@ -30,42 +30,40 @@ function App() {
     }, []);
 
     return (
-        <BrowserRouter>
-            <div className="App">
-                <nav className="navbar">
-                    {/* <AuthStatus /> */}
-                    <Link to="/">
-                        <h1>Immuno</h1>
-                    </Link>
-                    <ul className="navlinks">
-                        <li className="navlink">
-                            <Link to="/register">Register</Link>
-                        </li>
-                        <li className="navlink">
-                            <Link to="/signin">Signin</Link>
-                        </li>
-                        <li className="navlink">
-                            <Link to="/dashboard">Dashboard</Link>
-                        </li>
-                        <li className="navlink">
-                            <Link to="/records">View Records</Link>
-                        </li>
-                        <li className="navlink logout">
-                            <button className="logout" onClick={signOut}>
-                                Log out
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
-                <Routes>
-                    <Route path="/" index element={<Home />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/signin" element={<Signin />} />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/records" element={<Records />} />
-                </Routes>
-            </div>
-        </BrowserRouter>
+        <div className="App">
+            <nav className="navbar">
+                {/* <AuthStatus /> */}
+                <Link to="/">
+                    <h1>Immuno</h1>
+                </Link>
+                <ul className="navlinks">
+                    <li className="navlink">
+                        <Link to="/register">Register</Link>
+                    </li>
+                    <li className="navlink">
+                        <Link to="/signin">Signin</Link>
+                    </li>
+                    <li className="navlink">
+                        <Link to="/dashboard">Dashboard</Link>
+                    </li>
+                    <li className="navlink">
+                        <Link to="/records">View Records</Link>
+                    </li>
+                    <li className="navlink logout">
+                        <button className="logout" onClick={signOut}>
+                            Log out
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+            <Routes>
+                <Route path="/" index element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/signin" element={<Signin />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/records" element={<Records />} />
+            </Routes>
+        </div>
     );
 }
 
