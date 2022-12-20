@@ -112,3 +112,13 @@ input:focus {
     text-align: center;
     margin-bottom: 20px;
 }
+.record-outer {
+    display: flex;
+}
+.delete-btn {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    margin: 10px;
+}

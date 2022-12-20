@@ -83,7 +83,20 @@ export default function Dashboard() {
             frequency: "",
         });
     };
-    const deleteRecord = async (id) => {};
+    const deleteRecord = async (id) => {
+        setLoading(true);
+        try {
+            const { _, error } = await supabase
+                .from("Immunisation")
+                .delete()
+                .eq("id", id);
+            if (error) throw error;
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
     const updateRecord = async (id) => {};
     const getRecord = async (id) => {};
     const getAllRecords = async (e) => {
@@ -92,13 +105,17 @@ export default function Dashboard() {
                 .from("Immunisation")
                 .select("*");
             if (error) throw error;
-            console.log(data);
             setRecords(data);
-        } catch (error) {}
+        } catch (error) {
+            console.error(error);
+        }
     };
     useEffect(() => {
         getSupabaseUser();
     }, []);
+    useEffect(() => {
+        getAllRecords();
+    }, [records]);
 
     return (
         <div>
@@ -178,18 +195,25 @@ export default function Dashboard() {
                 <h1>All Immunisation Data</h1>
                 <div className="records">
                     {records.map((record) => (
-                        <div key={record.id} className="record">
-                            <p>{record.vaccine}</p>
-                            <p>{record.administered_by}</p>
-                            <p>{record.date_given}</p>
-                            <p>{record.dose}</p>
-                            <p>{record.frequency}</p>
+                        <div key={record.id} className="record-outer">
+                            <div className="record">
+                                <p>{record.vaccine}</p>
+                                <p>{record.administered_by}</p>
+                                <p>{`${new Date(
+                                    Date.parse(record.date_given)
+                                )}`}</p>
+                                <p>{record.dose}</p>
+                                <p>{record.frequency}</p>
+                            </div>
+                            <button
+                                className="delete-btn"
+                                onClick={() => deleteRecord(record.id)}
+                            >
+                                Delete Record
+                            </button>
                         </div>
                     ))}
                 </div>
-                <button onClick={getAllRecords} className="btn">
-                    {loading ? "Loading..." : "Get All Records"}
-                </button>
             </div>
         </div>
     );

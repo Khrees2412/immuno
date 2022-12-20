@@ -21,17 +21,10 @@ export default function Register() {
     };
 
     const { fullname, email, password, gender, dob, guardian } = user;
-    const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     if (supabase.auth.getUser() !== null) {
-    //         navigate("/dashboard");
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
 
     const handleSignup = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const { data, error } = await supabase.auth.signUp({
                 email,
@@ -61,6 +54,8 @@ export default function Register() {
             }
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoading(false);
         }
     };
     return (
