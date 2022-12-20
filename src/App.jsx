@@ -15,7 +15,7 @@ function App() {
             if (session === null) {
                 navigator("/signin");
             } else {
-                navigator("/");
+                navigator("/dashboard");
             }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps

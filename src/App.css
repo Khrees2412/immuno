@@ -75,6 +75,32 @@ input:focus {
     background-color: green;
     cursor: pointer;
 }
+.btn {
+    padding: 20px;
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 20px;
+    background-color: #892cdc;
+    cursor: pointer;
+}
+.display {
+    margin-top: 10rem;
+    margin-bottom: 4em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.record {
+    margin-bottom: 4rem;
+    border: 1px solid #ccc;
+    border-radius: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 .flex {
     display: flex;
     justify-content: space-between;

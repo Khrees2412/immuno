@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import { supabase } from "../supabaseClient";
-// import { AppContext } from "../AppContext";
 
 export default function Signin() {
     const [user, setUser] = useState({
@@ -8,7 +7,7 @@ export default function Signin() {
         password: "",
     });
     const [loading, setLoading] = useState(false);
-    // const { loading, signInAccount } = useContext(AppContext);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUser({ ...user, [name]: value });

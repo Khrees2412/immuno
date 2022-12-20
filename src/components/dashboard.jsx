@@ -4,7 +4,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import { supabase } from "../supabaseClient";
 
 export default function Dashboard() {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({
+        name: "",
+        id: "",
+    });
+    const [records, setRecords] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const { name, id } = user;
 
     const [immunisation, setImmmunisation] = useState({
         vaccine: "",
@@ -18,59 +25,89 @@ export default function Dashboard() {
     const { vaccine, administered_by, date_given, dose, frequency } =
         immunisation;
 
-    const getSupabaseUser = async () => {
-        try {
-            const { data, error } = await supabase.auth.getUser();
-            if (data.user) {
-                const { dataNew, error } = await supabase
-                    .from("User")
-                    .select("*")
-                    .eq("auth_id", data.user.id);
-                if (error) throw error;
-                setUser(dataNew);
-            }
-
-            if (error) throw error;
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setImmmunisation({ ...immunisation, [name]: value });
     };
-
-    useEffect(() => {
-        getSupabaseUser();
-    }, []);
-
-    const addNewRecord = async (record) => {
+    const getSupabaseUser = async () => {
         try {
-            const { data, error } = await supabase.from("Immunisation").insert([
-                {
-                    name: "DPT",
-                    date: new Date(),
-                    user_id: user[0].id,
-                },
-            ]);
+            const { data, error } = await supabase.auth.getUser();
+            if (data.user) {
+                getUser(data.user.id);
+            }
             if (error) throw error;
-            console.log(data);
         } catch (error) {
             console.error(error);
         }
     };
+    const getUser = async (id) => {
+        const { data, error } = await supabase
+            .from("User")
+            .select("*")
+            .eq("auth_id", id);
+        if (error) throw error;
+        data.map((user) => {
+            setUser({ ...user, name: user.name, id: user.auth_id });
+        });
+    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await addNewRecord(immunisation);
+    };
+    const addNewRecord = async (record) => {
+        setLoading(true);
+        try {
+            const { _, error } = await supabase.from("Immunisation").insert([
+                {
+                    vaccine: record.vaccine,
+                    administered_by: record.administered_by,
+                    user: id,
+                    date_given: record.date_given,
+                    dose: record.dose,
+                    frequency: record.frequency,
+                },
+            ]);
+            if (error) throw error;
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+
+        setImmmunisation({
+            vaccine: "",
+            administered_by: "",
+            user: "",
+            date_given: "",
+            dose: "",
+            frequency: "",
+        });
+    };
     const deleteRecord = async (id) => {};
     const updateRecord = async (id) => {};
     const getRecord = async (id) => {};
-    const getAllRecords = async (e) => {};
+    const getAllRecords = async (e) => {
+        try {
+            const { data, error } = await supabase
+                .from("Immunisation")
+                .select("*");
+            if (error) throw error;
+            console.log(data);
+            setRecords(data);
+        } catch (error) {}
+    };
+    useEffect(() => {
+        getSupabaseUser();
+    }, []);
+
     return (
         <div>
-            Dashboard
-            <p>Hey ! {user ? user : "Customer"}</p>
+            <p>Hi {name ? name : "Customer"}</p>
             <div>
-                <form>
-                    <h1>Add a new immunisation record</h1>
+                <form onSubmit={handleSubmit}>
+                    <h1 className="form-title">
+                        Add a new immunisation record
+                    </h1>
                     <div className="text-field">
                         <label htmlFor="vaccine">Vaccine</label>
                         <input
@@ -132,14 +169,27 @@ export default function Dashboard() {
                             />
                         </div>
                     </div>
-                    <button onClick={addNewRecord} className="submit">
-                        Add
+                    <button disabled={loading} className="submit">
+                        {loading ? "Loading..." : "Submit"}
                     </button>
                 </form>
             </div>
-            <div>
+            <div className="display">
                 <h1>All Immunisation Data</h1>
-                <button onClick={getAllRecords}>Get All Records</button>
+                <div className="records">
+                    {records.map((record) => (
+                        <div key={record.id} className="record">
+                            <p>{record.vaccine}</p>
+                            <p>{record.administered_by}</p>
+                            <p>{record.date_given}</p>
+                            <p>{record.dose}</p>
+                            <p>{record.frequency}</p>
+                        </div>
+                    ))}
+                </div>
+                <button onClick={getAllRecords} className="btn">
+                    {loading ? "Loading..." : "Get All Records"}
+                </button>
             </div>
         </div>
     );

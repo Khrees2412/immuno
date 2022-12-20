@@ -23,12 +23,12 @@ export default function Register() {
     const { fullname, email, password, gender, dob, guardian } = user;
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (supabase.auth.getUser() !== null) {
-            navigate("/dashboard");
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // useEffect(() => {
+    //     if (supabase.auth.getUser() !== null) {
+    //         navigate("/dashboard");
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
 
     const handleSignup = async (e) => {
         e.preventDefault();
@@ -50,6 +50,14 @@ export default function Register() {
                     },
                 ]);
                 if (error) throw error;
+                setUser({
+                    email: "",
+                    password: "",
+                    fullname: "",
+                    gender: "",
+                    dob: new Date(),
+                    guardian: "",
+                });
             }
         } catch (error) {
             console.error(error);
