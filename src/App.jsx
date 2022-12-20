@@ -1,11 +1,4 @@
-import {
-    useNavigate,
-    Outlet,
-    Route,
-    Routes,
-    Link,
-    BrowserRouter,
-} from "react-router-dom";
+import { useNavigate, Outlet, Route, Routes, Link } from "react-router-dom";
 import Signin from "./components/signin";
 import { supabase } from "./supabaseClient";
 import Register from "./components/register";
@@ -31,6 +24,14 @@ function App() {
 
     return (
         <div className="App">
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/signin" element={<Signin />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/records" element={<Records />} />
+            </Routes>
+
             <nav className="navbar">
                 {/* <AuthStatus /> */}
                 <Link to="/">
@@ -56,13 +57,6 @@ function App() {
                     </li>
                 </ul>
             </nav>
-            <Routes>
-                <Route path="/" index element={<Home />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/signin" element={<Signin />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/records" element={<Records />} />
-            </Routes>
         </div>
     );
 }
