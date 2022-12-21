@@ -21,7 +21,7 @@ export default function Register() {
     };
 
     const { fullname, email, password, gender, dob, guardian } = user;
-
+    const navigate = useNavigate();
     const handleSignup = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -56,6 +56,7 @@ export default function Register() {
             console.error(error);
         } finally {
             setLoading(false);
+            navigate("/signin");
         }
     };
     return (

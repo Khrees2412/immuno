@@ -6,10 +6,9 @@ import Dashboard from "./components/dashboard";
 import "./App.css";
 import Home from "./components/home";
 import { useEffect } from "react";
-import Records from "./components/records";
 
 function App() {
-    // const navigator = useNavigate();
+    const navigator = useNavigate();
 
     // useEffect(() => {
     //     supabase.auth.onAuthStateChange((_event, session) => {
@@ -31,23 +30,14 @@ function App() {
                 </Link>
                 <ul className="navlinks">
                     <li className="navlink">
-                        <Link to="/register">Register</Link>
-                    </li>
-                    <li className="navlink">
-                        <Link to="/signin">Signin</Link>
-                    </li>
-                    <li className="navlink">
                         <Link to="/dashboard">Dashboard</Link>
                     </li>
-                    <li className="navlink">
-                        <Link to="/records">View Records</Link>
-                    </li>
-                    <li className="navlink logout">
-                        <button className="logout" onClick={signOut}>
-                            Log out
-                        </button>
-                    </li>
                 </ul>
+                <div>
+                    <button className="logout" onClick={() => signOut()}>
+                        Log out
+                    </button>
+                </div>
             </nav>
 
             <Routes>
@@ -55,15 +45,21 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/signin" element={<Signin />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/records" element={<Records />} />
             </Routes>
         </div>
     );
 }
 
 async function signOut() {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    try {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        navigator("/signin");
+    } catch (error) {
+        console.error(error);
+    } finally {
+        navigator("/signin");
+    }
 }
 
 export default App;

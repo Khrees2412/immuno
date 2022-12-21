@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { supabase } from "../supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 export default function Signin() {
     const [user, setUser] = useState({
@@ -7,6 +8,7 @@ export default function Signin() {
         password: "",
     });
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,6 +26,7 @@ export default function Signin() {
             if (error) throw error; //check if there was an error fetching the data and move the execution to the catch block
 
             alert("Sign in successful");
+            navigate("/dashboard");
         } catch (error) {
             alert(error.error_description || error.message);
         } finally {

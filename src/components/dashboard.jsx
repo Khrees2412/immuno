@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
 export default function Dashboard() {
@@ -34,6 +35,7 @@ export default function Dashboard() {
             const { data, error } = await supabase.auth.getUser();
             if (data.user) {
                 getUser(data.user.id);
+                return true;
             }
             if (error) throw error;
         } catch (error) {
@@ -97,8 +99,6 @@ export default function Dashboard() {
             setLoading(false);
         }
     };
-    const updateRecord = async (id) => {};
-    const getRecord = async (id) => {};
     const getAllRecords = async (e) => {
         try {
             const { data, error } = await supabase
@@ -110,8 +110,12 @@ export default function Dashboard() {
             console.error(error);
         }
     };
+    const navigate = useNavigate();
     useEffect(() => {
-        getSupabaseUser();
+        const user = getSupabaseUser();
+        if (!user) {
+            navigate("/signin");
+        }
     }, []);
     useEffect(() => {
         getAllRecords();
@@ -119,7 +123,9 @@ export default function Dashboard() {
 
     return (
         <div>
-            <p>Hi {name ? name : "Customer"}</p>
+            <h1 className="form-title top-text">
+                Hi {name ? name : "Customer"}
+            </h1>
             <div>
                 <form onSubmit={handleSubmit}>
                     <h1 className="form-title">

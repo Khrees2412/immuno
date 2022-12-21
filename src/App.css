@@ -122,3 +122,37 @@ input:focus {
     border: none;
     margin: 10px;
 }
+.top-text {
+    margin-top: 20px;
+}
+.logout {
+    padding: 10px;
+    cursor: pointer;
+}
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+}
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+.register,
+.signin {
+    width: 120px;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+}
