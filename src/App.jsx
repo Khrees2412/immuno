@@ -9,29 +9,21 @@ import { useEffect } from "react";
 import Records from "./components/records";
 
 function App() {
-    const navigator = useNavigate();
+    // const navigator = useNavigate();
 
-    useEffect(() => {
-        supabase.auth.onAuthStateChange((_event, session) => {
-            if (session === null) {
-                navigator("/signin");
-            } else {
-                navigator("/dashboard");
-            }
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // useEffect(() => {
+    //     supabase.auth.onAuthStateChange((_event, session) => {
+    //         if (session === null) {
+    //             navigator("/signin");
+    //         } else {
+    //             navigator("/dashboard");
+    //         }
+    //     });
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
 
     return (
         <div className="App">
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/signin" element={<Signin />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/records" element={<Records />} />
-            </Routes>
-
             <nav className="navbar">
                 {/* <AuthStatus /> */}
                 <Link to="/">
@@ -57,6 +49,14 @@ function App() {
                     </li>
                 </ul>
             </nav>
+
+            <Routes>
+                <Route path="/" index element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/signin" element={<Signin />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/records" element={<Records />} />
+            </Routes>
         </div>
     );
 }
